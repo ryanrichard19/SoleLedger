@@ -7,9 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents();
 
+var soleLedgerUrl = builder.Configuration["SoleLedgerApi"] ??
+              throw new InvalidOperationException("Todo API URL is not configured");
+
 builder.Services.AddHttpClient<SoleLedgerClient>(client =>
 {
-    client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+    client.BaseAddress = new Uri(soleLedgerUrl);
 
     // The cookie auth stack detects this header and avoids redirects for unauthenticated
     // requests
